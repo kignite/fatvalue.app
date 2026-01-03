@@ -47,6 +47,27 @@ const App: React.FC = () => {
     }, 600);
   };
 
+  const drawAllRemaining = () => {
+    if (state.results.length >= MAX_DRAWS) return;
+
+    const remainingCount = MAX_DRAWS - state.results.length;
+    const newCards: MeatCard[] = Array.from({ length: remainingCount }, () => {
+      const rarity = getRandomRarity();
+      return {
+        ...CARD_DATA[rarity],
+        id: Math.random().toString(36).substr(2, 9)
+      };
+    });
+
+    setState(prev => ({
+      ...prev,
+      results: [...prev.results, ...newCards],
+      currentDrawIndex: prev.results.length + newCards.length - 1,
+      isAnimating: false
+    }));
+    setIsRevealed(true);
+  };
+
   const handleReveal = () => {
     if (!isRevealed && !state.isAnimating) {
       setIsRevealed(true);
@@ -177,14 +198,23 @@ const App: React.FC = () => {
                 {isRevealed && (
                   <div className="animate-in slide-in-from-bottom-4 duration-500 flex flex-col items-center gap-4">
                     {state.results.length < MAX_DRAWS ? (
-                      <button 
-                        onClick={drawNext}
-                        disabled={state.isAnimating}
-                        className="px-8 md:px-12 py-3 md:py-4 bg-gray-900 hover:bg-black disabled:bg-gray-300 text-white font-black rounded-2xl shadow-xl transition-all hover:scale-105 active:scale-95 flex items-center gap-2 text-xs md:text-sm tracking-widest uppercase"
-                      >
-                        <Sparkles size={16} />
-                        Next Kilogram ({state.results.length}/{MAX_DRAWS})
-                      </button>
+                      <div className="flex flex-col items-center gap-3">
+                        <button 
+                          onClick={drawNext}
+                          disabled={state.isAnimating}
+                          className="px-8 md:px-12 py-3 md:py-4 bg-gray-900 hover:bg-black disabled:bg-gray-300 text-white font-black rounded-2xl shadow-xl transition-all hover:scale-105 active:scale-95 flex items-center gap-2 text-xs md:text-sm tracking-widest uppercase"
+                        >
+                          <Sparkles size={16} />
+                          Next Kilogram ({state.results.length}/{MAX_DRAWS})
+                        </button>
+                        <button
+                          onClick={drawAllRemaining}
+                          disabled={state.isAnimating}
+                          className="px-8 md:px-12 py-3 md:py-4 border-2 border-gray-200 text-gray-500 hover:text-black hover:border-black disabled:text-gray-300 disabled:border-gray-200 font-black rounded-2xl transition-all flex items-center gap-2 text-[10px] md:text-xs tracking-widest uppercase"
+                        >
+                          一次開卡
+                        </button>
+                      </div>
                     ) : (
                       <button 
                         onClick={finishGame}
