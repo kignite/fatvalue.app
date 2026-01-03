@@ -184,12 +184,20 @@ const App: React.FC = () => {
                   <div className="text-center space-y-6">
                     <div className="text-5xl md:text-7xl animate-bounce">🧧</div>
                     <div className="text-gray-400 font-bold tracking-widest uppercase text-xs">First Kilogram Discovery</div>
-                    <button 
-                      onClick={drawNext}
-                      className="px-8 md:px-12 py-4 md:py-5 bg-gray-900 text-white font-black rounded-2xl shadow-xl transition-all hover:bg-black hover:scale-105 text-sm"
-                    >
-                      揭曉第一公斤
-                    </button>
+                    <div className="flex flex-col items-center gap-3">
+                      <button 
+                        onClick={drawNext}
+                        className="px-8 md:px-12 py-4 md:py-5 bg-gray-900 text-white font-black rounded-2xl shadow-xl transition-all hover:bg-black hover:scale-105 text-sm"
+                      >
+                        揭曉第一公斤
+                      </button>
+                      <button
+                        onClick={drawAllRemaining}
+                        className="px-8 md:px-12 py-3 md:py-4 border-2 border-gray-200 text-gray-500 hover:text-black hover:border-black font-black rounded-2xl transition-all flex items-center gap-2 text-[10px] md:text-xs tracking-widest uppercase"
+                      >
+                        一鍵全開
+                      </button>
+                    </div>
                   </div>
                 )}
               </div>
@@ -198,23 +206,14 @@ const App: React.FC = () => {
                 {isRevealed && (
                   <div className="animate-in slide-in-from-bottom-4 duration-500 flex flex-col items-center gap-4">
                     {state.results.length < MAX_DRAWS ? (
-                      <div className="flex flex-col items-center gap-3">
-                        <button 
-                          onClick={drawNext}
-                          disabled={state.isAnimating}
-                          className="px-8 md:px-12 py-3 md:py-4 bg-gray-900 hover:bg-black disabled:bg-gray-300 text-white font-black rounded-2xl shadow-xl transition-all hover:scale-105 active:scale-95 flex items-center gap-2 text-xs md:text-sm tracking-widest uppercase"
-                        >
-                          <Sparkles size={16} />
-                          Next Kilogram ({state.results.length}/{MAX_DRAWS})
-                        </button>
-                        <button
-                          onClick={drawAllRemaining}
-                          disabled={state.isAnimating}
-                          className="px-8 md:px-12 py-3 md:py-4 border-2 border-gray-200 text-gray-500 hover:text-black hover:border-black disabled:text-gray-300 disabled:border-gray-200 font-black rounded-2xl transition-all flex items-center gap-2 text-[10px] md:text-xs tracking-widest uppercase"
-                        >
-                          一次開卡
-                        </button>
-                      </div>
+                      <button 
+                        onClick={drawNext}
+                        disabled={state.isAnimating}
+                        className="px-8 md:px-12 py-3 md:py-4 bg-gray-900 hover:bg-black disabled:bg-gray-300 text-white font-black rounded-2xl shadow-xl transition-all hover:scale-105 active:scale-95 flex items-center gap-2 text-xs md:text-sm tracking-widest uppercase"
+                      >
+                        <Sparkles size={16} />
+                        Next Kilogram ({state.results.length}/{MAX_DRAWS})
+                      </button>
                     ) : (
                       <button 
                         onClick={finishGame}
@@ -279,13 +278,22 @@ const App: React.FC = () => {
                     <div className="text-[10px] text-gray-400 uppercase font-black tracking-[0.2em]">妳的肉有多昂貴</div>
                     <div className="text-3xl md:text-5xl font-black text-gray-900 tracking-tighter">$ {totalValue.toLocaleString()} <span className="text-xs md:text-sm font-bold text-gray-300 ml-1 uppercase">TWD</span></div>
                   </div>
-                  <button 
-                    onClick={() => { window.location.href = '/retry.html'; }}
-                    className="px-6 md:px-8 py-3 md:py-4 border-2 border-gray-200 text-gray-400 hover:text-black hover:border-black font-black rounded-2xl transition-all flex items-center gap-2 text-[10px] md:text-xs tracking-widest uppercase"
-                  >
-                    <RotateCcw size={16} />
-                    最後一夜的再次評估
-                  </button>
+                  <div className="flex flex-col sm:flex-row items-center gap-3">
+                    <button 
+                      onClick={resetGame}
+                      className="px-6 md:px-8 py-3 md:py-4 bg-gray-900 hover:bg-black text-white font-black rounded-2xl shadow-xl transition-all flex items-center gap-2 text-[10px] md:text-xs tracking-widest uppercase"
+                    >
+                      <RotateCcw size={16} />
+                      再玩一次
+                    </button>
+                    <button 
+                      onClick={() => { window.location.href = '/retry.html'; }}
+                      className="px-6 md:px-8 py-3 md:py-4 border-2 border-gray-200 text-gray-400 hover:text-black hover:border-black font-black rounded-2xl transition-all flex items-center gap-2 text-[10px] md:text-xs tracking-widest uppercase"
+                    >
+                      <RotateCcw size={16} />
+                      最後一夜的再次評估
+                    </button>
+                  </div>
                </div>
             </div>
           )}
